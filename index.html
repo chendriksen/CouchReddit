@@ -108,30 +108,12 @@
 
 		}
 
-		function morePics() {
-			reddit.hot('all').limit().before(idArray[arrayIndex-1]).fetch(function(res) {
-				for(var i=0;i<res.data.children.length;i++){
-	        		url = res.data.children[i].data.url;
-	        		title = res.data.children[i].data.title;
-	        		id = res.data.children[i].data.id;
-	        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 ))){
-	        			gifArray.push(url);
-	        			titleArray.push(title);
-	        			idArray.push(id);
-	        		}
-	        	}
-
-	        	document.getElementById("bg").src = gifArray[arrayIndex];
-	        	document.getElementById("title").innerHTML = titleArray[arrayIndex];
-
-	 	 	});    	
-		}
 
 		function nextPic() {
 			    switchImages();
         		arrayIndex ++;
         		if (arrayIndex == gifArray.length) {
-			        morePics();
+			        arrayIndex = 0;
 			    }
 			    document.getElementById("bg").src = gifArray[arrayIndex];
 			    document.getElementById("title").innerHTML = titleArray[arrayIndex];
