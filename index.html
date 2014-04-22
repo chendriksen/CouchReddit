@@ -19,7 +19,7 @@
 			/* ==========================================================
 			 * Fullscreen GIF Background
 			 * =========================================================*/
-
+			 
 			#bg {
 				height:100%; 
 				margin-left: auto;
@@ -145,13 +145,14 @@
 		var titleArray = [];
 		var idArray = [];
 		var arrayIndex = 0;
+		var nsfw = false;
 
 		reddit.hot('all').limit().fetch(function(res) {
 			for(var i=0;i<res.data.children.length;i++){
         		url = res.data.children[i].data.url;
         		title = res.data.children[i].data.title;
         		id = res.data.children[i].data.id;
-        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 ))){
+        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 )) && res.data.children[i].data.over_18 == nsfw){
         			gifArray.push(url);
         			titleArray.push(title);
         			idArray.push(id);
