@@ -1,0 +1,202 @@
+<html>
+	<head>
+	<title>CouchReddit</title>
+
+		<script src="https://s3-eu-west-1.amazonaws.com/redditbrowse/reddit.min.js"></script>
+
+		<style>
+
+			body {
+				background-color: black;
+				margin: 0;
+			}
+
+			a {
+				text-decoration: none;
+				color: white;
+			}
+
+			/* ==========================================================
+			 * Fullscreen GIF Background
+			 * =========================================================*/
+
+			#bg {
+				height:100%; 
+				margin-left: auto;
+    			margin-right: auto;
+				display: none;
+				max-width:100%;
+				overflow:auto;
+
+			}
+
+
+			/* ==========================================================
+			 * Loading GIF
+			 * =========================================================*/
+
+			#loading {
+				display: block;
+    			margin-left: auto;
+    			margin-right: auto;
+				vertical-align: middle;
+				max-width: 60%;
+			}
+
+			/* ==========================================================
+			 * caption text
+			 * =========================================================*/
+
+			 p {
+			 	color: white;
+			 	font-family:Georgia,Helvetica,sans-serif;
+			    background: rgba(0, 0, 0, 0.5);
+			 }
+
+			 #title {
+			    position:absolute;
+			    font-size:2em;
+			    font-weight:bold;
+			    background: rgba(0, 0, 0, 0.5);
+			    padding: 10px;
+			 }
+
+			 #info {
+			 	position: fixed;
+				bottom: 0;
+				right: 0;
+				display: block;
+				padding: 1em;
+			 }
+
+		</style>
+
+			  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-9390923-9', 'redditbrowse.s3-website-eu-west-1.amazonaws.com');
+  ga('send', 'pageview');
+
+	</script>
+
+
+	</head>
+
+	<body>
+
+	<p id="title">Loading... [press any key or click to change pic]</p>
+
+	<img id="loading" src="https://s3-eu-west-1.amazonaws.com/redditbrowse/loading.gif"></img>
+
+	<img id="bg" onload="switchImages()"></img>
+
+	<p id="info"><a href="http://www.twitter.com/chendriksen">@chendriksen</p>
+
+	<script type="text/javascript">
+
+		function switchImages() {
+			if (document.getElementById("bg").style.display == "none"){
+				document.getElementById("bg").style.display="block";
+				document.getElementById("loading").style.display="none"
+			} else {
+				document.getElementById("bg").style.display="none";
+				document.getElementById("loading").style.display="block"
+			}
+
+		}
+
+		function morePics() {
+			reddit.hot('all').limit().before(idArray[arrayIndex-1]).fetch(function(res) {
+				for(var i=0;i<res.data.children.length;i++){
+	        		url = res.data.children[i].data.url;
+	        		title = res.data.children[i].data.title;
+	        		id = res.data.children[i].data.id;
+	        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 ))){
+	        			gifArray.push(url);
+	        			titleArray.push(title);
+	        			idArray.push(id);
+	        		}
+	        	}
+
+	        	document.getElementById("bg").src = gifArray[arrayIndex];
+	        	document.getElementById("title").innerHTML = titleArray[arrayIndex];
+
+	 	 	});    	
+		}
+
+		function nextPic() {
+			    switchImages();
+        		arrayIndex ++;
+        		if (arrayIndex == gifArray.length) {
+			        morePics();
+			    }
+			    document.getElementById("bg").src = gifArray[arrayIndex];
+			    document.getElementById("title").innerHTML = titleArray[arrayIndex];
+		}
+
+		function prevPic() {
+			    switchImages();
+        		arrayIndex --;
+        		if (arrayIndex <= 0) {
+			        arrayIndex = gifArray.length-1;
+			    }
+			    document.getElementById("bg").src = gifArray[arrayIndex];
+			    document.getElementById("title").innerHTML = titleArray[arrayIndex];
+		}		
+
+		function checkKeyPressed(e) {
+			if (e.keyCode == "37") {
+        		prevPic();
+    		} 
+    		if (e.keyCode == "39") {
+    			nextPic();
+    		}
+
+		}
+
+		var gifArray = [];
+		var titleArray = [];
+		var idArray = [];
+		var arrayIndex = 0;
+
+		reddit.hot('all').limit().fetch(function(res) {
+			for(var i=0;i<res.data.children.length;i++){
+        		url = res.data.children[i].data.url;
+        		title = res.data.children[i].data.title;
+        		id = res.data.children[i].data.id;
+        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 ))){
+        			gifArray.push(url);
+        			titleArray.push(title);
+        			idArray.push(id);
+        		}
+        	}
+
+        	document.getElementById("bg").src = gifArray[arrayIndex];
+        	document.getElementById("title").innerHTML = titleArray[arrayIndex];
+
+ 	 	});    	
+
+		window.onload = function() {
+			switchImages();
+
+        	document.onclick = function() {
+        		nextPic();
+
+        	};
+
+        	window.addEventListener("keyup", checkKeyPressed, false);
+
+
+        };
+
+
+	  </script>
+
+
+
+	</body>
+
+</html>
