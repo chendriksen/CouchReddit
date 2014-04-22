@@ -1,7 +1,8 @@
 CouchReddit
 ===========
 
-Uses reddit.js to grab hot pictures from Reddit, and put them in a gallery.
+Uses [reddit.js](https://github.com/sahilm/reddit.js) to grab hot pictures from Reddit, and put them in a gallery.
+[Here's a live view](http://redditbrowse.s3-website-eu-west-1.amazonaws.com/)
 
 ## What's next
 
