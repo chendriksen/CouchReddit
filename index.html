@@ -25,9 +25,11 @@
 				margin-left: auto;
     			margin-right: auto;
 				display: none;
-				max-width:100%;
-				overflow:auto;
+			}
 
+			#container {
+				max-width:100%;
+				overflow:hidden;
 			}
 
 
@@ -90,9 +92,9 @@
 	<p id="title">Loading... [press any key or click to change pic]</p>
 
 	<img id="loading" src="https://s3-eu-west-1.amazonaws.com/redditbrowse/loading.gif"></img>
-
+	<div id='container'>
 	<img id="bg" onload="switchImages()"></img>
-
+	</div>
 	<p id="info"><a href="http://www.twitter.com/chendriksen">@chendriksen</p>
 
 	<script type="text/javascript">
