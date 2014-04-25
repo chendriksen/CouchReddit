@@ -99,35 +99,32 @@
 
 	<script type="text/javascript">
 
-		function switchImages() {
-			if (document.getElementById("bg").style.display == "none"){
-				document.getElementById("bg").style.display="block";
-				document.getElementById("loading").style.display="none"
-			} else {
-				document.getElementById("bg").style.display="none";
-				document.getElementById("loading").style.display="block"
-			}
+		var nsfw = false;
 
-		}
-
+		var arrayIndex = 0;
+		var gifArray = new Array();
+		var titleArray = new Array();
+		var idArray = new Array();
 
 		function nextPic() {
-			    switchImages();
+				document.getElementById("title").innerHTML = "Loading...";
         		arrayIndex ++;
         		if (arrayIndex == gifArray.length) {
 			        arrayIndex = 0;
 			    }
-			    document.getElementById("bg").src = gifArray[arrayIndex];
+			    document.getElementById("bg").src = gifArray[arrayIndex].src;
 			    document.getElementById("title").innerHTML = titleArray[arrayIndex];
 		}
 
 		function prevPic() {
-			    switchImages();
+				document.getElementById("title").innerHTML = "Loading...";
         		arrayIndex --;
         		if (arrayIndex <= 0) {
 			        arrayIndex = gifArray.length-1;
 			    }
-			    document.getElementById("bg").src = gifArray[arrayIndex];
+
+
+			    document.getElementById("bg").src = gifArray[arrayIndex].src;
 			    document.getElementById("title").innerHTML = titleArray[arrayIndex];
 		}		
 
@@ -140,32 +137,40 @@
     		}
 
 		}
-
-		var gifArray = [];
-		var titleArray = [];
-		var idArray = [];
-		var arrayIndex = 0;
-		var nsfw = false;
-
+		
+		
 		reddit.hot('all').limit().fetch(function(res) {
+
+			var count = 0;
+			
 			for(var i=0;i<res.data.children.length;i++){
+
         		url = res.data.children[i].data.url;
         		title = res.data.children[i].data.title;
         		id = res.data.children[i].data.id;
+        		
         		if (/gif|jpg|png/i.test(url.substr(url.length - 3 )) && res.data.children[i].data.over_18 == nsfw){
-        			gifArray.push(url);
-        			titleArray.push(title);
-        			idArray.push(id);
+
+        			gifArray[count] = new Image();
+        			gifArray[count].src = url;
+        			console.log(gifArray[count].src);
+        			titleArray[count] = title;
+        			idArray[count] = id;
+        			count ++;
+
         		}
         	}
 
-        	document.getElementById("bg").src = gifArray[arrayIndex];
+        	document.getElementById("bg").style.display="block";
+			document.getElementById("loading").style.display="none"
+
+
+			document.getElementById("bg").src = gifArray[arrayIndex].src;
         	document.getElementById("title").innerHTML = titleArray[arrayIndex];
 
  	 	});    	
 
 		window.onload = function() {
-			switchImages();
 
         	document.onclick = function() {
         		nextPic();
