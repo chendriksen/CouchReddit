@@ -132,7 +132,7 @@
 				document.getElementById("title").innerHTML = "Loading...";
         		arrayIndex ++;
         		if (arrayIndex == gifArray.length) {
-			        loadArray(currentNSFW,currentSub);
+			        loadArray(currentNSFW,currentSub,true);
 			        document.getElementById("bg").src = gifArray[arrayIndex].src;
 			    	document.getElementById("title").innerHTML = titleArray[arrayIndex];
 			    } else {
@@ -172,20 +172,24 @@
 			gifArray = [];
 			titleArray = [];
 			idArray = [];
-			loadArray(currentNSFW,currentSub);
+			loadArray(currentNSFW,currentSub,true);
 			count = 0;
 			
 		}
 		
-		function loadArray(nsfwVar,subreddit){
+		function loadArray(nsfwVar,subreddit,changed){
 
-			var setVariable = nsfwVar || false
+			var nsfw = nsfwVar || false
 
 			if (count != 0){
-				timeStamp = "t3_"+idArray[arrayIndex-1]
+				timeStamp = "t3_"+idArray[idArray.length-1]
+			} else {
+				timeStamp = ""
 			}
 
 			reddit.hot(subreddit).after(timeStamp).limit().fetch(function(res) {
+
+				console.log(res);
 				
 				for(var i=0;i<res.data.children.length;i++){
 
@@ -193,13 +197,25 @@
 	        		title = res.data.children[i].data.title;
 	        		id = res.data.children[i].data.id;
 	        		
-	        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 )) && res.data.children[i].data.over_18 == nsfwVar){
+	        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 ))){
+
+	        			if (res.data.children[i].data.over_18 == false){
 
 	        			gifArray[count] = new Image();
 	        			gifArray[count].src = url;
 	        			titleArray[count] = title;
 	        			idArray[count] = id;
 	        			count ++;
+
+	        			} else if (res.data.children[i].data.over_18 == true && nsfw == true){
+
+	        			gifArray[count] = new Image();
+	        			gifArray[count].src = url;
+	        			titleArray[count] = title;
+	        			idArray[count] = id;
+	        			count ++;
+
+	        			}
 
 	        		}
 	        	}
@@ -209,13 +225,13 @@
 
 				nextPic();
 
+	 	 	}, )
 
-	 	 	});    
 
 	 	 	};	
 
 	 	
-	 	loadArray(currentNSFW, currentSub);
+	 	loadArray(currentNSFW, currentSub,false);
 
 		window.onload = function() {
 
