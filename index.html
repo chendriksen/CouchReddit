@@ -128,6 +128,7 @@
 		};
 
 		function nextPic() {
+				console.log(arrayIndex)
 				document.getElementById("title").innerHTML = "Loading...";
         		arrayIndex ++;
         		if (arrayIndex == gifArray.length) {
@@ -137,7 +138,7 @@
 			    } else {
 			    	document.getElementById("bg").src = gifArray[arrayIndex].src;
 			    	document.getElementById("title").innerHTML = titleArray[arrayIndex];
-			    }a
+			    }
 
 			    
 		}
@@ -165,14 +166,15 @@
 		}
 
 		function changeSub(nsfwVar,subreddit){
-			count = 0;
+			arrayIndex = 0;
 			currentNSFW = nsfwVar;
-			currentSub = subreddit
+			currentSub = subreddit;
+			gifArray = [];
+			titleArray = [];
+			idArray = [];
 			loadArray(currentNSFW,currentSub);
-			gifArray.length = 0;
-			titleArray.length = 0;
-			idArray.length = 0;
-			return true;
+			count = 0;
+			
 		}
 		
 		function loadArray(nsfwVar,subreddit){
@@ -206,7 +208,6 @@
 				document.getElementById("loading").style.display="none"
 
 				nextPic();
-
 
 
 	 	 	});    
