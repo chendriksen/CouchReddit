@@ -128,9 +128,8 @@ mixpanel.init("973a6574b27767c134e2e8dccb687eb7");</script><!-- end Mixpanel -->
 
         		if (arrayIndex >= gifArray.length) {
         			arrayIndex = gifArray.length-1;
-        		}
-
-        		if (arrayIndex == gifArray.length-4) {
+        			document.getElementById("bg").src="https://s3-eu-west-1.amazonaws.com/redditbrowse/loading.gif"
+        		} else if (arrayIndex == gifArray.length-4) {
 			        loadArray(currentNSFW,currentSub,true);
 			        document.getElementById("bg").src = gifArray[arrayIndex].src;
 			    	document.getElementById("title").innerHTML = titleArray[arrayIndex];
