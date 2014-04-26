@@ -71,6 +71,10 @@
 				padding: 1em;
 			 }
 
+			 #title:hover {
+			 	opacity:0.1;
+			 }
+
 		</style>
 
 			  <script>
@@ -179,8 +183,9 @@
 	        	document.getElementById("bg").style.display="block";
 				document.getElementById("loading").style.display="none"
 
-				document.getElementById("bg").src = gifArray[arrayIndex].src;
-	        	document.getElementById("title").innerHTML = titleArray[arrayIndex];
+				nextPic();
+
+
 
 	 	 	});    
 
@@ -194,7 +199,7 @@
 		window.onload = function() {
 
 
-        document.onclick = function() {
+        document.getElementById("bg").onclick = function() {
         		nextPic();
 
         	};
