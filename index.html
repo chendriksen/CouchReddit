@@ -107,15 +107,19 @@
 
 	<!-- I reckon the better way to do this is with a proper form submission, and reading through the URL -->
 
-	<button onclick="loadArray(document.getElementById('nsfwchecked').checked,document.getElementById('subredditinput').value) ">Update</button>
+	<button onclick="changeSub(document.getElementById('nsfwchecked').checked,document.getElementById('subredditinput').value) ">Update</button>
 
 	<script type="text/javascript">		
 
-
+		var count = 0;
 		var arrayIndex = 0;
+		var timeStamp = "";
 		var gifArray = new Array();
 		var titleArray = new Array();
 		var idArray = new Array();
+
+		currentNSFW = false;
+		currentSub = "all";
 
 		function getFormData(){ 
 			var subInput=document.getElementById('sub').value;
@@ -127,10 +131,15 @@
 				document.getElementById("title").innerHTML = "Loading...";
         		arrayIndex ++;
         		if (arrayIndex == gifArray.length) {
-			        arrayIndex = 0;
+			        loadArray(currentNSFW,currentSub);
+			        document.getElementById("bg").src = gifArray[arrayIndex].src;
+			    	document.getElementById("title").innerHTML = titleArray[arrayIndex];
+			    } else {
+			    	document.getElementById("bg").src = gifArray[arrayIndex].src;
+			    	document.getElementById("title").innerHTML = titleArray[arrayIndex];
 			    }
-			    document.getElementById("bg").src = gifArray[arrayIndex].src;
-			    document.getElementById("title").innerHTML = titleArray[arrayIndex];
+
+			    
 		}
 
 		function prevPic() {
@@ -154,14 +163,24 @@
     		}
 
 		}
+
+		function changeSub(nsfwVar,subreddit){
+			count = 0;
+			currentNSFW = nsfwVar;
+			currentSub = subreddit
+			loadArray(currentNSFW,currentSub);
+			return true;
+		}
 		
 		function loadArray(nsfwVar,subreddit){
 
 			var setVariable = nsfwVar || false
 
-			reddit.hot(subreddit).limit().fetch(function(res) {
+			if (count != 0){
+				timeStamp = "t3_"+idArray[arrayIndex-1]
+			}
 
-				var count = 0;
+			reddit.hot(subreddit).after(timeStamp).limit().fetch(function(res) {
 				
 				for(var i=0;i<res.data.children.length;i++){
 
@@ -189,12 +208,10 @@
 
 	 	 	});    
 
-	 	 	return true;
-
 	 	 	};	
 
 	 	
-	 	loadArray(false,'all');
+	 	loadArray(currentNSFW, currentSub);
 
 		window.onload = function() {
 
