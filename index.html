@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 	<title>CouchReddit</title>
@@ -121,7 +122,6 @@ mixpanel.init("973a6574b27767c134e2e8dccb687eb7");</script><!-- end Mixpanel -->
 		};
 
 		function nextPic() {
-				console.log(arrayIndex)
 				document.getElementById("title").innerHTML = "Loading...";
         		arrayIndex ++;
         		if (arrayIndex == gifArray.length) {
@@ -150,11 +150,11 @@ mixpanel.init("973a6574b27767c134e2e8dccb687eb7");</script><!-- end Mixpanel -->
 		function checkKeyPressed(e) {
 			if (e.keyCode == "37") {
         		prevPic();
-        		mixpanel.track("Previous Pic", {"Method": "Keyboard", "sub": currentsub, "nsfw": currentNSFW});
+        		mixpanel.track("Previous Pic", {"Method": "Keyboard", "sub": currentSub, "nsfw": currentNSFW});
     		} 
     		if (e.keyCode == "39") {
     			nextPic();
-    			mixpanel.track("Next Pic", {"Method": "Keyboard", "sub": currentsub, "nsfw": currentNSFW});
+    			mixpanel.track("Next Pic", {"Method": "Keyboard", "sub": currentSub, "nsfw": currentNSFW});
     		}
 
 		}
@@ -162,7 +162,7 @@ mixpanel.init("973a6574b27767c134e2e8dccb687eb7");</script><!-- end Mixpanel -->
 		function changeSub(nsfwVar,subreddit){
 			arrayIndex = 0;
 			currentNSFW = nsfwVar;
-			currentSub = subreddit;
+			currentSub = subreddit || all;
 			gifArray = [];
 			titleArray = [];
 			idArray = [];
@@ -183,8 +183,6 @@ mixpanel.init("973a6574b27767c134e2e8dccb687eb7");</script><!-- end Mixpanel -->
 			}
 
 			reddit.hot(subreddit).after(timeStamp).limit().fetch(function(res) {
-
-				console.log(res);
 				
 				for(var i=0;i<res.data.children.length;i++){
 
@@ -233,7 +231,7 @@ mixpanel.init("973a6574b27767c134e2e8dccb687eb7");</script><!-- end Mixpanel -->
 
         document.getElementById("bg").onclick = function() {
         		nextPic();
-        		mixpanel.track("Next Pic", {"Method": "Click", "sub": currentsub, "nsfw": currentNSFW});
+        		mixpanel.track("Next Pic", {"Method": "Click", "sub": currentSub, "nsfw": currentNSFW});
 
         	};
 
