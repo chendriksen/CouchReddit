@@ -8,4 +8,6 @@ Uses [reddit.js](https://github.com/sahilm/reddit.js) to grab hot pictures from 
 
 - Turn it into a Meteor app
 - Routing for subreddits + make root homepage
-- Infinite image loading instead of looping over first page results
+- NSFW/SFW choice
+- ~~Infinite image loading instead of looping over first page results~~
+- Better error handling for 0 results (caused by NSFW or subreddit option)
