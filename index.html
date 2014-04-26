@@ -93,18 +93,29 @@
 
 	<img id="loading" src="https://s3-eu-west-1.amazonaws.com/redditbrowse/loading.gif"></img>
 	<div id='container'>
-	<img id="bg" onload="switchImages()"></img>
+	<img id="bg"></img>
 	</div>
-	<p id="info"><a href="http://www.twitter.com/chendriksen">@chendriksen</p>
+	<p id="info">
 
-	<script type="text/javascript">
+	<input type="text" id="subredditinput" value="all" />
+	<label for="nsfwchecked">NSFW:</label>
+	<input type="checkbox" id="nsfwchecked" />
 
-		var nsfw = false;
+	<button onclick="loadArray(document.getElementById('nsfwchecked').checked,document.getElementById('subredditinput').value) ">Update</button>
+
+	<script type="text/javascript">		
+
 
 		var arrayIndex = 0;
 		var gifArray = new Array();
 		var titleArray = new Array();
 		var idArray = new Array();
+
+		function getFormData(){ 
+			var subInput=document.getElementById('sub').value;
+			var nswfInput=document.getElementById('nsfw').value;
+			loadArray(nswfInput,subInput);
+		};
 
 		function nextPic() {
 				document.getElementById("title").innerHTML = "Loading...";
@@ -138,40 +149,50 @@
 
 		}
 		
-		
-		reddit.hot('all').limit().fetch(function(res) {
-
-			var count = 0;
+		function loadArray(nsfwVar,subreddit){
 			
-			for(var i=0;i<res.data.children.length;i++){
+			var setVariable = nsfwVar || false
 
-        		url = res.data.children[i].data.url;
-        		title = res.data.children[i].data.title;
-        		id = res.data.children[i].data.id;
-        		
-        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 )) && res.data.children[i].data.over_18 == nsfw){
+			reddit.hot(subreddit).limit().fetch(function(res) {
 
-        			gifArray[count] = new Image();
-        			gifArray[count].src = url;
-        			titleArray[count] = title;
-        			idArray[count] = id;
-        			count ++;
+				var count = 0;
+				
+				for(var i=0;i<res.data.children.length;i++){
 
-        		}
-        	}
+	        		url = res.data.children[i].data.url;
+	        		title = res.data.children[i].data.title;
+	        		id = res.data.children[i].data.id;
+	        		
+	        		if (/gif|jpg|png/i.test(url.substr(url.length - 3 )) && res.data.children[i].data.over_18 == nsfwVar){
 
-        	document.getElementById("bg").style.display="block";
-			document.getElementById("loading").style.display="none"
+	        			gifArray[count] = new Image();
+	        			gifArray[count].src = url;
+	        			titleArray[count] = title;
+	        			idArray[count] = id;
+	        			count ++;
 
+	        		}
+	        	}
 
-			document.getElementById("bg").src = gifArray[arrayIndex].src;
-        	document.getElementById("title").innerHTML = titleArray[arrayIndex];
+	        	document.getElementById("bg").style.display="block";
+				document.getElementById("loading").style.display="none"
 
- 	 	});    	
+				document.getElementById("bg").src = gifArray[arrayIndex].src;
+	        	document.getElementById("title").innerHTML = titleArray[arrayIndex];
+
+	 	 	});    
+
+	 	 	return true;
+
+	 	 	};	
+
+	 	
+	 	loadArray(false,'all');
 
 		window.onload = function() {
 
-        	document.onclick = function() {
+
+        document.onclick = function() {
         		nextPic();
 
         	};
