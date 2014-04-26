@@ -101,6 +101,8 @@
 	<label for="nsfwchecked">NSFW:</label>
 	<input type="checkbox" id="nsfwchecked" />
 
+	<!-- I reckon the better way to do this is with a proper form submission, and reading through the URL -->
+
 	<button onclick="loadArray(document.getElementById('nsfwchecked').checked,document.getElementById('subredditinput').value) ">Update</button>
 
 	<script type="text/javascript">		
@@ -150,7 +152,7 @@
 		}
 		
 		function loadArray(nsfwVar,subreddit){
-			
+
 			var setVariable = nsfwVar || false
 
 			reddit.hot(subreddit).limit().fetch(function(res) {
