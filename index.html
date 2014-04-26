@@ -137,7 +137,7 @@
 			    } else {
 			    	document.getElementById("bg").src = gifArray[arrayIndex].src;
 			    	document.getElementById("title").innerHTML = titleArray[arrayIndex];
-			    }
+			    }a
 
 			    
 		}
@@ -169,6 +169,9 @@
 			currentNSFW = nsfwVar;
 			currentSub = subreddit
 			loadArray(currentNSFW,currentSub);
+			gifArray.length = 0;
+			titleArray.length = 0;
+			idArray.length = 0;
 			return true;
 		}
 		
