@@ -12,4 +12,4 @@ Uses [reddit.js](https://github.com/sahilm/reddit.js) to grab hot pictures from 
 - ~~Infinite image loading instead of looping over first page results~~
 - Better error handling for 0 results (caused by NSFW or subreddit option)
 - ~~fix shitty coding (e.g. loading images puts you onto #1 instead of #0)~~ 
-- Make the code less ugly
+- fix shitty coding #2 - load entire reddit objects, instead of saving parts into arrays
